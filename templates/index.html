@@ -29,11 +29,10 @@
           <div class="card-body">
             <div class="card-title">Chat</div>
             <hr/>
-            <div class="messages">
+            <div class="messages" style="height: 70vh; overflow-y:scroll;">
               {% for message in messages %}
                 <div>{{ message|safe }}</div> <!-- turn off XSS checking with "|safe" -->
               {% endfor %}
-
             </div>
           </div>
         </div>
@@ -54,8 +53,8 @@
     $("#chat").submit(function(e) {
       e.preventDefault();
       var message = $('#textbox').val().trim();
-
       socket.emit('send message', {data: message});
+      $('#textbox').val('');
     });
 
     socket.on('receive message', function(data) {
@@ -63,6 +62,7 @@
       // $('.messages').append('<p>' + data.data + '</p>');
       var messageElement = $('<div>').text(data.data);
       $('.messages').append(messageElement);
+      $('.messages').scrollTop($('.messages').prop('scrollHeight'));
     });
 
   </script>
