@@ -16,7 +16,7 @@ def hello():
 
 @socketio.on('connect')
 def test_connect():
-    print('Client connected:')
+    print('Client connected.')
 
 @socketio.on('connected')
 def connected_event(json):
