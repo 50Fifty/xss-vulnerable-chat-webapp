@@ -5,7 +5,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
   <!-- Socket IO -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
   <!-- jQuery -->
@@ -16,6 +15,11 @@
     socket.on('connect', function() {
       socket.emit('connected', {data: 'User connected!'});
     });
+
+    if (document.cookie == '') 
+    {
+      window.location.href = '/';
+    }
 
     $(document).ready(function() {
       var username = getCookie("username");
@@ -68,13 +72,17 @@
     $("#chat").submit(function(e) {
       e.preventDefault();
       var message = $('#textbox').val().trim();
-      socket.emit('send message', {data: `${$('#username').text()}: ${message}`});
+      socket.emit('send message', {
+        username : $('#username').text(),
+        message : message,
+        token : getCookie("token")
+      });
       $('#textbox').val('');
     });
 
     socket.on('receive message', function(data) {
       console.log('Received data:', data);
-      var messageElement = $('<div>').text(data.data);
+      var messageElement = $('<div>').text(data.message);
       $('.messages').append(messageElement);
       $('.messages').scrollTop($('.messages').prop('scrollHeight'));
     });

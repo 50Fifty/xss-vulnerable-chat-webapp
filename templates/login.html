@@ -15,7 +15,6 @@
 
   <script>
     if (document.cookie != '') {
-      // window.location.href = '/chat';
       $.ajax({
         url : '/isloggedin',
         type : 'POST',
@@ -24,7 +23,7 @@
         },
         success : function(response) {
           if (response.status == 'success'){
-            window.location.href = '/chat';
+            window.location.href = response.redirect;
           }
         },
         error : function(error) {
@@ -80,7 +79,8 @@
           var now = new Date();
           now.setTime(now.getTime() + 1 * 3600 * 1000);
           document.cookie = `expires=${now.toUTCString()}`;// set cookie
-          window.location.href = data.redirect;
+          // window.location.href = `${data.redirect}?username=${data.username}`; // /chat?username=...
+          window.location.href = data.redirect
         },
         error: function (err) {
           console.log('error');

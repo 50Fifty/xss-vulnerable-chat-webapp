@@ -18,7 +18,6 @@ login_manager.init_app(app)
 CORS(app)
 
 messages = []
-# sessions = dict()
 
 @app.route("/", methods=['GET'])
 def index():
@@ -41,14 +40,13 @@ def login():
                 "username"  : username,
                 "redirect"  : "chat"
             }
-            # return url_for('chat') # maybe can give a token here? (in json format?)
+
         else:
             return {
                 "status"    : "error",
                 "message"   : "Invalid username or password.",
                 "redirect"  : "/"
             }
-            # return render_template('login.html', error_msg="Invalid username or password.")
 
 @app.route("/logout")
 @login_required
@@ -61,7 +59,7 @@ def chat():
     return render_template('chat.html', messages=messages)
 
 @app.route("/isloggedin", methods=["POST"])
-def hastoken():
+def isloggedin():
     if request.method == 'POST':
         cookie = request.form['cookie']
         parts = cookie.split("; ")
@@ -80,7 +78,8 @@ def hastoken():
             return {
                 "status"    : "success",
                 "message"   : "User is logged in.",
-                "username"  : user.username
+                "username"  : user.username,
+                "redirect"  : "chat"
             }
         else:
             return {
@@ -99,8 +98,12 @@ def connected_event(json):
 @socketio.on('send message')
 def handle_message(json):
     print('Received message: ' + str(json))
-    messages.append(json['data'])
-    socketio.emit('receive message', json)
+
+    if json['username'] == User.get_by_token(json['token']).username: # message is legit
+        messages.append(json['message'])
+        socketio.emit('receive message', {'message': f"{json['username']}: {json['message']}"})
+    else:
+        print("Invalid message")
 
 @login_manager.user_loader
 def load_user(user_id):
