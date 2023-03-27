@@ -88,7 +88,7 @@ def isloggedin():
             }
 
 @socketio.on('connect')
-def test_connect():
+def connect():
     print('Client connected.')
 
 @socketio.on('connected')
