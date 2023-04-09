@@ -1,4 +1,4 @@
-# **Chat WebApp with Flask**
+# **Vulnerable Chat WebApp with Flask**
 
 Building an vulnerable chat web app with Flask, socket programming to demostrate XSS attacks.
 
