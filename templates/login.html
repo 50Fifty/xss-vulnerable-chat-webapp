@@ -22,7 +22,7 @@
           'cookie' : document.cookie
         },
         success : function(response) {
-          if (response.status == 'success'){
+          if (response.status == 'success'){ // if cookie is valid, redirect to chat page
             window.location.href = response.redirect;
           }
         },
