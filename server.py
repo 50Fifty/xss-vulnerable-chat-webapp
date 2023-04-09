@@ -100,7 +100,7 @@ def handle_message(json):
     print('Received message: ' + str(json))
 
     if json['username'] == User.get_by_token(json['token']).username: # message is legit
-        messages.append(json['message'])
+        messages.append(f"{json['username']}: {json['message']}")
         socketio.emit('receive message', {'message': f"{json['username']}: {json['message']}"})
     else:
         print("Invalid message")
